@@ -3,6 +3,7 @@ description: Interface implementation for the Brightcove plugin
 version: 0.0.1
 repository: https://github.com/Genieology/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
 homepage: https://github.com/Genieology/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
+publish_to: none
 
 environment:
   sdk: '>=2.18.0 <3.0.0'

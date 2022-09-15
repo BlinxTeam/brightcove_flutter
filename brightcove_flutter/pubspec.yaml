@@ -23,7 +23,10 @@ dependencies:
       ref: v0.0.1
 
   brightcove_flutter_platform_interface:
-    path: ../brightcove_flutter_platform_interface
+    git:
+      url: git@github.com:Genieology/brightcove_flutter.git
+      path: brightcove_flutter_platform_interface
+      ref: v0.0.1
 
 dev_dependencies:
   flutter_test:
