@@ -2,7 +2,7 @@ name: brightcove_flutter
 description: A new Flutter project.
 version: 0.0.1
 homepage:
-
+publish_to: none
 environment:
   sdk: '>=2.18.0 <3.0.0'
   flutter: ">=1.17.0"
