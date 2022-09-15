@@ -1,0 +1,68 @@
+group 'com.monstarlab.brightcove_android'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://repo.brightcove.com/releases'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://repo.brightcove.com/releases'
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'libs'
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable 'GradleDependency'
+    }
+
+    dependencies {
+        implementation 'androidx.multidex:multidex:2.0.1'
+        implementation 'com.google.code.gson:gson:2.8.9'
+        //implementation "com.brightcove.player:android-sdk:7.1.1"
+        implementation 'com.brightcove.player:exoplayer2:7.1.1'
+
+        //implementation fileTree(dir:'libs', includes: ['*.jar', '*.aar'])
+    }
+}
