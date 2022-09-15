@@ -169,6 +169,8 @@ enum VideoEventType {
 
   /// The video stopped to buffer.
   bufferingEnd,
+
+  /// The video is being played.
   playProgress,
 
   /// An unknown event has been received.
