@@ -225,12 +225,16 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         DataSource(dataSource: dataSource, sourceType: dataSourceType);
     _playerId =
         await _videoPlayerPlatform.create(dataSourceDescription, options);
-    value = value.copyWith(isBuffering: true);
+    value = value.copyWith(isInitialized: true);
 
     void listener(VideoEvent event) {
       switch (event.eventType) {
         case VideoEventType.initialized:
-          value = value.copyWith(isInitialized: true, duration: event.duration);
+          value = value.copyWith(
+            size: event.size,
+            duration: event.duration,
+            isInitialized: event.duration != null,
+          );
           break;
         case VideoEventType.playProgress:
           value = value.copyWith(
@@ -266,6 +270,7 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (_isDisposed) {
       return;
     }
+
     if (!_isDisposed) {
       _isDisposed = true;
       await _eventSubscription?.cancel();

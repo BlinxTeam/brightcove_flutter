@@ -25,9 +25,6 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
     private var autoplay = false
     private var eventSink: EventChannel.EventSink? = null
 
-
-    fun isPlaying() = videoView.isPlaying
-
     fun initialize(context: Context, msg: Messages.PlayMessage) {
         videoView = BrightcoveExoPlayerVideoView(context)
         videoView.finishInitialization()
@@ -53,13 +50,10 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
                     override fun onVideo(p0: Video) {
                         videoView.add(p0)
                         isInitialized = true
+                        sendInitializedEvent(p0)
                         if (autoplay) {
                             videoView.start()
                         }
-                        val event: MutableMap<String, Any> = HashMap()
-                        event["event"] = "initialized"
-                        event["duration"] = p0.durationLong
-                        eventSink?.success(event)
                     }
 
                     override fun onError(errors: MutableList<CatalogError>) {
@@ -75,13 +69,10 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
                         if (p0 != null) {
                             videoView.addAll(p0.videos)
                             isInitialized = true
+                            sendInitializedEvent(p0.videos.first())
                             if (autoplay) {
                                 videoView.start()
                             }
-                            val event: MutableMap<String, Any> = HashMap()
-                            event["event"] = "initialized"
-                            event["duration"] = p0.videos.first().durationLong
-                            eventSink?.success(event)
                         }
                     }
 
@@ -93,6 +84,15 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
                 })
             }
         }
+    }
+
+    fun sendInitializedEvent(video: Video) {
+        val event: MutableMap<String, Any> = HashMap()
+        event["event"] = "initialized"
+        event["duration"] = video.durationLong
+        event["videoWidth"] = videoView.videoWidth
+        event["videoHeight"] = videoView.videoHeight
+        eventSink?.success(event)
     }
 
     private fun subscribeToEvents() {
