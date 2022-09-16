@@ -27,16 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: [
-          PlayerWidget(
-            key: UniqueKey(),
-          ),
-          PlayerWidget(
-            key: UniqueKey(),
-            videoId: '6311388166112',
-          ),
-        ],
+      body: PlayerWidget(
+        key: UniqueKey(),
+        videoId: '6312352211112',
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -174,6 +167,9 @@ class _SeekBarState extends State<SeekBar> {
             child: SliderTheme(
               data: SliderTheme.of(context).copyWith(
                 trackHeight: 8,
+                thumbShape: const RoundSliderThumbShape(
+                  enabledThumbRadius: 8,
+                ),
                 thumbColor: Colors.white,
                 activeTrackColor: Colors.orange,
                 inactiveTrackColor: Colors.white,

@@ -114,7 +114,6 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
         videoView.eventEmitter.on(EventType.PROGRESS) {
             val event: MutableMap<String, Any> = HashMap()
             event["event"] = "playProgress"
-            // TODO: fix progress not being delivered to Flutter
             event["position"] = videoView.videoDisplay.playerCurrentPosition
             eventSink!!.success(event)
         }

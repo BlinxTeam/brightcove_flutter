@@ -243,13 +243,10 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.bufferingStart:
           value = value.copyWith(isBuffering: true);
           break;
-        case VideoEventType.bufferingUpdate:
-          // TODO: bind missing orperties
-          //value = value.copyWith(isBuffering: true);
-          break;
         case VideoEventType.bufferingEnd:
           value = value.copyWith(isBuffering: false);
           break;
+        case VideoEventType.bufferingUpdate:
         case VideoEventType.unknown:
           break;
       }

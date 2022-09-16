@@ -56,8 +56,10 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
-            currentPosition: (map['position'] as int).toDouble(),
+            currentPosition: map['position'] as int,
           );
+        case 'completed':
+          return VideoEvent(eventType: VideoEventType.completed);
         default:
           return VideoEvent(eventType: VideoEventType.unknown);
       }
@@ -89,12 +91,12 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
 
   @override
   Future<void> play(String playerId) {
-    return _api.playOrPause(TextureMessage(playerId: playerId));
+    return _api.play(TextureMessage(playerId: playerId));
   }
 
   @override
   Future<void> pause(String playerId) {
-    return _api.playOrPause(TextureMessage(playerId: playerId));
+    return _api.pause(TextureMessage(playerId: playerId));
   }
   
 

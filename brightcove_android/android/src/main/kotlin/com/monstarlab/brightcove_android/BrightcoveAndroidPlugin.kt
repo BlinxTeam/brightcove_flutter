@@ -79,15 +79,9 @@ class BrightcoveAndroidPlugin : FlutterPlugin, Messages.BrightcoveVideoPlayerApi
         players[msg.playerId]?.setVolume(msg.volume.toLong())
     }
 
-    override fun playOrPause(msg: Messages.TextureMessage) {
-        val videoPlayer = players[msg.playerId]
-        if (videoPlayer != null) {
-            when (videoPlayer.isPlaying()) {
-                true -> videoPlayer.pause()
-                false -> videoPlayer.play()
-            }
-        }
-    }
+    override fun play(msg: Messages.TextureMessage) = players[msg.playerId]!!.play()
+
+    override fun pause(msg: Messages.TextureMessage) = players[msg.playerId]!!.pause()
 
     override fun seekTo(msg: Messages.PositionMessage) {
         players[msg.playerId]?.seekTo(msg.position)

@@ -70,7 +70,9 @@ abstract class BrightcoveVideoPlayerApi {
 
   void setVolume(VolumeMessage msg);
 
-  void playOrPause(TextureMessage msg);
+  void play(TextureMessage msg);
+
+  void pause(TextureMessage msg);
 
   void seekTo(PositionMessage msg);
 }

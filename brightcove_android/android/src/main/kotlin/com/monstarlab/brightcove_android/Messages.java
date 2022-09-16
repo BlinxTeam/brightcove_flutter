@@ -341,7 +341,8 @@ public class Messages {
     @NonNull TextureMessage create(@NonNull PlayMessage msg);
     void dispose(@NonNull TextureMessage msg);
     void setVolume(@NonNull VolumeMessage msg);
-    void playOrPause(@NonNull TextureMessage msg);
+    void play(@NonNull TextureMessage msg);
+    void pause(@NonNull TextureMessage msg);
     void seekTo(@NonNull PositionMessage msg);
 
     /** The codec used by BrightcoveVideoPlayerApi. */
@@ -444,7 +445,7 @@ public class Messages {
       }
       {
         BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.BrightcoveVideoPlayerApi.playOrPause", getCodec());
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.BrightcoveVideoPlayerApi.play", getCodec());
         if (api != null) {
           channel.setMessageHandler((message, reply) -> {
             Map<String, Object> wrapped = new HashMap<>();
@@ -454,7 +455,31 @@ public class Messages {
               if (msgArg == null) {
                 throw new NullPointerException("msgArg unexpectedly null.");
               }
-              api.playOrPause(msgArg);
+              api.play(msgArg);
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.BrightcoveVideoPlayerApi.pause", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              TextureMessage msgArg = (TextureMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              api.pause(msgArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {
