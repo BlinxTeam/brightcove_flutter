@@ -341,6 +341,7 @@ public class Messages {
     @NonNull TextureMessage create(@NonNull PlayMessage msg);
     void dispose(@NonNull TextureMessage msg);
     void setVolume(@NonNull VolumeMessage msg);
+    void enterPictureInPictureMode(@NonNull TextureMessage msg);
     void play(@NonNull TextureMessage msg);
     void pause(@NonNull TextureMessage msg);
     void seekTo(@NonNull PositionMessage msg);
@@ -432,6 +433,30 @@ public class Messages {
                 throw new NullPointerException("msgArg unexpectedly null.");
               }
               api.setVolume(msgArg);
+              wrapped.put("result", null);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.BrightcoveVideoPlayerApi.enterPictureInPictureMode", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              TextureMessage msgArg = (TextureMessage)args.get(0);
+              if (msgArg == null) {
+                throw new NullPointerException("msgArg unexpectedly null.");
+              }
+              api.enterPictureInPictureMode(msgArg);
               wrapped.put("result", null);
             }
             catch (Error | RuntimeException exception) {

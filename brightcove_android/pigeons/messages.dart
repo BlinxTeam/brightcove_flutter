@@ -48,6 +48,12 @@ class PositionMessage {
   int position;
 }
 
+class PictureInPictureMessage {
+  PictureInPictureMessage(this.enabled);
+
+  bool enabled;
+}
+
 enum DataSourceType {videoById, playlistById}
 
 class PlayMessage {
@@ -69,6 +75,8 @@ abstract class BrightcoveVideoPlayerApi {
   void dispose(TextureMessage msg);
 
   void setVolume(VolumeMessage msg);
+
+  void enterPictureInPictureMode(TextureMessage msg);
 
   void play(TextureMessage msg);
 

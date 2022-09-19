@@ -1,10 +1,12 @@
 package com.monstarlab.brightcove_android
 
+import android.app.Activity
 import android.content.Context
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
@@ -13,7 +15,7 @@ import io.flutter.view.TextureRegistry
 import java.util.*
 
 /** BrightcovePlayerFlutterPlugin */
-class BrightcoveAndroidPlugin : FlutterPlugin, Messages.BrightcoveVideoPlayerApi {
+class BrightcoveAndroidPlugin : FlutterPlugin, ActivityAware, Messages.BrightcoveVideoPlayerApi {
 
     companion object {
         const val VIEW_TYPE = "brightcove_videoplayer"
@@ -37,6 +39,18 @@ class BrightcoveAndroidPlugin : FlutterPlugin, Messages.BrightcoveVideoPlayerApi
             p.dispose()
         }
         pluginState = null
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        this.pluginState?.activity = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {}
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {}
+
+    override fun onDetachedFromActivity() {
+        pluginState?.activity = null
     }
 
     override fun initialize() {
@@ -86,6 +100,10 @@ class BrightcoveAndroidPlugin : FlutterPlugin, Messages.BrightcoveVideoPlayerApi
     override fun seekTo(msg: Messages.PositionMessage) {
         players[msg.playerId]?.seekTo(msg.position)
     }
+
+    override fun enterPictureInPictureMode(msg: Messages.TextureMessage) {
+        players[msg.playerId]?.enterPiPMode(pluginState!!.activity)
+    }
 }
 
 data class PluginState(
@@ -93,4 +111,5 @@ data class PluginState(
     val binaryMessenger: BinaryMessenger,
     val textureRegistry: TextureRegistry,
     val platformViewRegistry: PlatformViewRegistry,
+    var activity: Activity? = null
 )

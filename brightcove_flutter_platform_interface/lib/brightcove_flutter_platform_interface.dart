@@ -90,6 +90,11 @@ abstract class BrightcoveFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('getPosition() has not been implemented.');
   }
 
+  /// Plays in Picture in Picture mode if supported.
+  Future<void> enterPiPMode(String playerId) {
+    throw UnimplementedError('getPosition() has not been implemented.');
+  }
+
   /// Returns a widget displaying the video with a given playerId.
   Widget buildView(String playerId) {
     throw UnimplementedError('buildView() has not been implemented.');
@@ -173,6 +178,9 @@ enum VideoEventType {
   /// The video is being played.
   playProgress,
 
+  /// There are some captions available
+  captionsAvailable,
+
   /// An unknown event has been received.
   unknown,
 }
@@ -192,6 +200,7 @@ class VideoEvent {
     this.duration,
     this.size,
     this.currentPosition,
+    this.captionLanguages,
     this.rotationCorrection,
   });
 
@@ -218,6 +227,12 @@ class VideoEvent {
   /// Only used if [eventType] is [VideoEventType.initialized].
   final int? rotationCorrection;
 
+  /// The list of languages available for captions (if available).
+  final List<String>? captionLanguages;
+
+  bool get isCaptionsAvailable =>
+      captionLanguages != null && captionLanguages!.isNotEmpty;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -225,6 +240,7 @@ class VideoEvent {
             runtimeType == other.runtimeType &&
             eventType == other.eventType &&
             duration == other.duration &&
+            captionLanguages == other.captionLanguages &&
             currentPosition == other.currentPosition &&
             size == other.size &&
             rotationCorrection == other.rotationCorrection;
@@ -232,10 +248,11 @@ class VideoEvent {
 
   @override
   int get hashCode => Object.hash(
-        eventType,
-        currentPosition,
-        duration,
         size,
+        eventType,
+        duration,
+        currentPosition,
+        captionLanguages,
         rotationCorrection,
       );
 }

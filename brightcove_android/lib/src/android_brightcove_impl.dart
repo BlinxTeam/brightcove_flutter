@@ -57,6 +57,11 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
               (map['videoHeight'] as int).toDouble(),
             ),
           );
+        case 'captionsAvailable':
+          return VideoEvent(
+            eventType: VideoEventType.captionsAvailable,
+            captionLanguages: event['languages'] as List<String>,
+          );
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
@@ -112,5 +117,10 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
   @override
   Future<void> setVolume(String playerId, double volume) {
     return _api.setVolume(VolumeMessage(playerId: playerId, volume: volume));
+  }
+
+  @override
+  Future enterPiPMode(String playerId) {
+    return _api.enterPictureInPictureMode(TextureMessage(playerId: playerId));
   }
 }

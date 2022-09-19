@@ -1,7 +1,10 @@
 package com.monstarlab.brightcove_android
 
+import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.view.View
+import com.brightcove.player.captioning.BrightcoveCaptionFormat
 import com.brightcove.player.edge.Catalog
 import com.brightcove.player.edge.CatalogError
 import com.brightcove.player.edge.PlaylistListener
@@ -58,8 +61,10 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
 
                     override fun onError(errors: MutableList<CatalogError>) {
                         super.onError(errors)
-                        eventSink?.error("BrightcoveVideoPlayerError",
-                            "Brightcove had a error: ${errors.first()}", null)
+                        eventSink?.error(
+                            "BrightcoveVideoPlayerError",
+                            "Brightcove had a error: ${errors.first()}", null
+                        )
                     }
                 })
             }
@@ -78,8 +83,10 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
 
                     override fun onError(errors: MutableList<CatalogError>) {
                         super.onError(errors)
-                        eventSink?.error("BrightcoveVideoPlayerError",
-                            "Brightcove had a error: ${errors.first()}", null)
+                        eventSink?.error(
+                            "BrightcoveVideoPlayerError",
+                            "Brightcove had a error: ${errors.first()}", null
+                        )
                     }
                 })
             }
@@ -87,6 +94,9 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
     }
 
     fun sendInitializedEvent(video: Video) {
+        val props = video.properties
+        videoView.setClosedCaptioningEnabled(true)
+
         val event: MutableMap<String, Any> = HashMap()
         event["event"] = "initialized"
         event["duration"] = video.durationLong
@@ -122,6 +132,21 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
             event["event"] = "completed"
             eventSink?.success(event)
         }
+        videoView.eventEmitter.on(EventType.CAPTIONS_LANGUAGES) {
+            // You could find the desired language in the LANGUAGES list.
+            // List<String> languages = event.getProperty(Event.LANGUAGES, List.class);
+            selectCaption(videoView.currentVideo, "en")
+
+            val event: MutableMap<String, Any> = HashMap()
+            event["event"] = "captionsAvailable"
+
+            val languages = it.properties[Event.LANGUAGES]
+            if (languages != null) {
+                print("CAPTION-LANGUAGES: $languages")
+                event["languages"] = languages
+            }
+            eventSink!!.success(event)
+        }
     }
 
     fun play() {
@@ -138,11 +163,46 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
         videoView.seekTo(position)
     }
 
-    fun enablePiP() {
+    fun enterPiPMode(activity: Activity?) {
+        if (activity == null)  return
+/*
         val pipManager = videoView.pictureInPictureManager
-        if (pipManager.isInPictureInPictureMode) {
-            pipManager.enterPictureInPictureMode()
-            // TODO: implement Picture-in-Picture mode.
+        pipManager.registerActivity(activity, videoView)
+        pipManager.enterPictureInPictureMode()*/
+        // TODO: complete PiP support
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getCaptionsForLanguageCode(
+        video: Video?,
+        languageCode: String
+    ): Pair<Uri?, BrightcoveCaptionFormat?>? {
+        val payload = video?.properties?.get(Video.Fields.CAPTION_SOURCES)
+        if (payload is List<*>) {
+            val pairs: List<Pair<Uri, BrightcoveCaptionFormat>> =
+                payload as List<Pair<Uri, BrightcoveCaptionFormat>>
+            for (pair in pairs) {
+                if (pair.second.language().equals(languageCode)) {
+                    return pair
+                }
+            }
+        }
+        return null
+    }
+
+    private fun selectCaption(video: Video, language: String) {
+        val pair = getCaptionsForLanguageCode(video, language)
+        if (pair != null && pair.first!! != Uri.EMPTY) {
+            // BrightcoveCaptionFormat.BRIGHTCOVE_SCHEME indicates that is not a URL we need to load with the LoadCaptionsService, but instead we'll be enabled through a different component.
+            if (!pair.first.toString().startsWith(BrightcoveCaptionFormat.BRIGHTCOVE_SCHEME)) {
+                videoView.closedCaptioningController.loadCaptionsService
+                    .loadCaptions(pair.first, pair.second!!.type())
+            }
+            val properties: MutableMap<String, Any?> = HashMap()
+            properties[Event.CAPTION_FORMAT] = pair.second
+            properties[Event.CAPTION_URI] = pair.first
+            videoView.eventEmitter
+                .emit(EventType.SELECT_CLOSED_CAPTION_TRACK, properties)
         }
     }
 
