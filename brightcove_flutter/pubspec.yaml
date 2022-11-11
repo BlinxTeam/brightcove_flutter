@@ -12,6 +12,8 @@ flutter:
     platforms:
       android:
         default_package: brightcove_android
+      ios:
+        default_package: brightcove_ios
 
 dependencies:
   flutter:
@@ -21,6 +23,8 @@ dependencies:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_android
       ref: v0.0.6
+  brightcove_ios:
+    path: ../brightcove_ios
 
 dependency_overrides:
   brightcove_flutter_platform_interface:

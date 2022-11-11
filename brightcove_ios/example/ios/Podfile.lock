@@ -1,0 +1,22 @@
+PODS:
+  - brightcove_ios (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - brightcove_ios (from `.symlinks/plugins/brightcove_ios/ios`)
+  - Flutter (from `Flutter`)
+
+EXTERNAL SOURCES:
+  brightcove_ios:
+    :path: ".symlinks/plugins/brightcove_ios/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  brightcove_ios: 4cf63b804dd52413167423c14c6b71a20b9ce57e
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3

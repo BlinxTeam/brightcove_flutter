@@ -1,0 +1,34 @@
+name: brightcove_ios
+description: A new Flutter plugin project.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+  flutter: ">=2.5.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  brightcove_flutter_platform_interface:
+    git:
+      url: https://github.com/Genieology/brightcove_flutter.git
+      path: brightcove_flutter_platform_interface
+      ref: v0.0.6
+  flutter_bcov:
+    git:
+      url: https://github.com/BrightcoveOS/ios-player-samples.git
+      path: PlayerUI/Flutter/flutter_bcov
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  pigeon: ^4.0.2
+
+# The following section is specific to Flutter packages.
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: SwiftBrightcoveIosPlugin
