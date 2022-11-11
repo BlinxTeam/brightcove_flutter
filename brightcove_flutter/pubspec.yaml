@@ -27,7 +27,7 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_ios
-      ref: v0.0.9
+      ref: vmum
 
 dependency_overrides:
   brightcove_flutter_platform_interface:
