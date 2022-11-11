@@ -15,7 +15,6 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_flutter_platform_interface
-      ref: v0.0.9
   flutter_bcov:
     git:
       url: https://github.com/BrightcoveOS/ios-player-samples.git

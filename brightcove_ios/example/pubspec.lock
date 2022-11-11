@@ -19,8 +19,8 @@ packages:
     dependency: transitive
     description:
       path: brightcove_flutter_platform_interface
-      ref: "v0.0.6"
-      resolved-ref: "3c92578d0210d77ba75366703359d7456eb04b5b"
+      ref: "v0.0.9"
+      resolved-ref: "943340ff3352df60b62f7826847c6bb367ead161"
       url: "https://github.com/Genieology/brightcove_flutter.git"
     source: git
     version: "0.0.1"
@@ -30,7 +30,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   characters:
     dependency: transitive
     description:
