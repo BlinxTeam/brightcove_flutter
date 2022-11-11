@@ -1,6 +1,6 @@
 name: brightcove_ios
 description: A new Flutter plugin project.
-version: 0.0.1
+version: 0.1.0
 homepage:
 publish_to: none
 
@@ -15,7 +15,7 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_flutter_platform_interface
-      ref: v0.0.6
+      ref: v0.0.9
   flutter_bcov:
     git:
       url: https://github.com/BrightcoveOS/ios-player-samples.git

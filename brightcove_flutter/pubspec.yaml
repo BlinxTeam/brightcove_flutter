@@ -1,6 +1,6 @@
 name: brightcove_flutter
 description: A new Flutter project.
-version: 0.0.1
+version: 0.1.0
 homepage:
 publish_to: none
 environment:
@@ -22,19 +22,19 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_android
-      ref: v0.0.7
+      ref: v0.0.9
   brightcove_ios:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_ios
-      ref: v0.0.7
+      ref: v0.0.9
 
 dependency_overrides:
   brightcove_flutter_platform_interface:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_flutter_platform_interface
-      ref: v0.0.6
+      ref: v0.0.9
 
 dev_dependencies:
   flutter_test:
