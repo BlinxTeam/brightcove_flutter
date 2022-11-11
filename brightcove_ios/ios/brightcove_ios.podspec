@@ -15,7 +15,7 @@ A new Flutter plugin project.
   s.source           = { :git => 'https://github.com/brightcove/BrightcoveSpecs.git' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'Brightcove-Player-Core/XCFramework'
+  s.dependency 'Brightcove-Player-Core/XCFramework', '6.11.1'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
