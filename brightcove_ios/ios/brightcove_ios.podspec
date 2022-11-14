@@ -6,16 +6,14 @@ Pod::Spec.new do |s|
   s.name             = 'brightcove_ios'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter plugin project.'
-  s.description      = <<-DESC
-A new Flutter plugin project.
-                       DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
+  s.description      = 'Brightcove flutter genieology bridge.'
+  s.homepage         = 'http://blinx.com'
+  s.license          = 'MIT'
   s.author           = { 'Your Company' => 'email@example.com' }
-  s.source           = { :git => 'https://github.com/brightcove/BrightcoveSpecs.git' }
+  s.source           = { :path => '.' } 
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'Brightcove-Player-Core/XCFramework', '6.11.1'
+  s.dependency 'Brightcove-Player-Core/XCFramework'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
