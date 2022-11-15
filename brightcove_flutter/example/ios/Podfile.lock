@@ -1,0 +1,29 @@
+PODS:
+  - Brightcove-Player-Core/XCFramework (6.11.0)
+  - brightcove_ios (0.0.1):
+    - Brightcove-Player-Core/XCFramework
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - brightcove_ios (from `.symlinks/plugins/brightcove_ios/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  https://github.com/brightcove/BrightcoveSpecs.git:
+    - Brightcove-Player-Core
+
+EXTERNAL SOURCES:
+  brightcove_ios:
+    :path: ".symlinks/plugins/brightcove_ios/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  Brightcove-Player-Core: a72f016a40f5c17491017883e843a5a09c825fa9
+  brightcove_ios: f9fa91182f10caeef7b0e2ce34f9591e2fae6984
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+
+PODFILE CHECKSUM: e73aa6f8a65d0a732ec667d972e57d7023b3a4bd
+
+COCOAPODS: 1.11.3

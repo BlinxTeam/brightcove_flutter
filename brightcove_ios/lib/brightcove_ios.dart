@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
   final BrightcoveVideoPlayerApi _api = BrightcoveVideoPlayerApi();
 
-  static void registerWidth() {
+  static void registerWith() {
     BrightcoveFlutterPlatform.instance = BrightcoveIosPlatform();
   }
 
