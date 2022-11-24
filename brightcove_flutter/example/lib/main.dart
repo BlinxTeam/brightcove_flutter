@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: PlayerWidget(
         key: UniqueKey(),
-        videoId: '6312352211112',
+        videoId: '6140448705001',
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -47,11 +47,11 @@ class PlayerWidget extends StatefulWidget {
 class _PlayerWidgetState extends State<PlayerWidget> {
   late final BrightcoveVideoPlayerController _controller =
       BrightcoveVideoPlayerController.playVideoById(
-    widget.videoId ?? '6311532572112',
+    widget.videoId ?? '6140448705001',
     options: BrightcoveOptions(
       account: "6314458267001",
       policy:
-          "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
+          "BCpkADawqM3J2bAuhWkQGGBMUDP-AMAH-f1-IKc4iZiGb47PWGGyoo1IWVhMsEJ0txtg2EYvS_-gGFMZzliBagV-DNkm0nQK4cDqhYjHS2C5KTJ9XXoYs8hOQbtmbbhuc_kKHlen3gyi7Jsa",
     ),
   );
 
