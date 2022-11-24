@@ -19,9 +19,15 @@ dependencies:
   flutter:
     sdk: flutter
   brightcove_android:
-    path: ../brightcove_android
+    git:
+      url: https://github.com/Genieology/brightcove_flutter.git
+      path: brightcove_android
+      ref: v0.1.2
   brightcove_ios:
-    path: ../brightcove_ios
+    git:
+      url: https://github.com/Genieology/brightcove_flutter.git
+      path: brightcove_android
+      ref: v0.1.2
 
 dependency_overrides:
   brightcove_flutter_platform_interface:
