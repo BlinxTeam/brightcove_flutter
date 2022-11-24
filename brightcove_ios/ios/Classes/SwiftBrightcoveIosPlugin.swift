@@ -10,15 +10,17 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
     public init(with registrar: FlutterPluginRegistrar) {
         super.init()
         self.registrar = registrar
-        BrightcoveVideoPlayerApiSetup.setUp(binaryMessenger: registrar.messenger(), api: self)
     }
     
   public static func register(with registrar: FlutterPluginRegistrar) {
-      registrar.addApplicationDelegate(SwiftBrightcoveIosPlugin(with: registrar))
+      let plugin = SwiftBrightcoveIosPlugin(with: registrar)
+      registrar.addApplicationDelegate(plugin)
+      BrightcoveVideoPlayerApiSetup.setUp(binaryMessenger: registrar.messenger(),
+                                          api: plugin)
   }
 
     func initialize() {
-       // disposeAll()
+       disposeAll()
     }
     
     private func disposeAll() {
