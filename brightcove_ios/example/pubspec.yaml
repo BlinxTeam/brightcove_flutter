@@ -1,5 +1,6 @@
 name: brightcove_ios_example
 description: Demonstrates how to use the brightcove_ios plugin.
+version: 0.0.1
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -18,6 +19,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  brightcove_flutter:
+    path: ../../brightcove_flutter
   brightcove_ios:
     # When depending on this package from a real application you should use:
     #   brightcove_ios: ^x.y.z

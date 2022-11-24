@@ -15,12 +15,26 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  brightcove_android:
+    dependency: transitive
+    description:
+      path: "../../brightcove_android"
+      relative: true
+    source: path
+    version: "0.1.0"
+  brightcove_flutter:
+    dependency: "direct main"
+    description:
+      path: "../../brightcove_flutter"
+      relative: true
+    source: path
+    version: "0.1.0"
   brightcove_flutter_platform_interface:
     dependency: transitive
     description:
       path: brightcove_flutter_platform_interface
-      ref: "v0.0.9"
-      resolved-ref: "943340ff3352df60b62f7826847c6bb367ead161"
+      ref: HEAD
+      resolved-ref: "40d81ea2e05201e75614c3dfd60485e86165c10b"
       url: "https://github.com/Genieology/brightcove_flutter.git"
     source: git
     version: "0.0.1"

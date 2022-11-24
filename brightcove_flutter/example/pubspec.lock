@@ -21,21 +21,30 @@ packages:
       path: "../../brightcove_android"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   brightcove_flutter:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   brightcove_flutter_platform_interface:
     dependency: transitive
     description:
-      path: "../../brightcove_flutter_platform_interface"
+      path: brightcove_flutter_platform_interface
+      ref: HEAD
+      resolved-ref: "40d81ea2e05201e75614c3dfd60485e86165c10b"
+      url: "https://github.com/Genieology/brightcove_flutter.git"
+    source: git
+    version: "0.0.1"
+  brightcove_ios:
+    dependency: transitive
+    description:
+      path: "../../brightcove_ios"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   characters:
     dependency: transitive
     description:
@@ -185,5 +194,5 @@ packages:
     source: hosted
     version: "2.1.2"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
+  dart: ">=2.18.2 <3.0.0"
   flutter: ">=2.5.0"

@@ -1,7 +1,5 @@
 import 'package:brightcove_ios/src/messages.g.dart';
 import 'package:brightcove_flutter_platform_interface/brightcove_flutter_platform_interface.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -36,7 +34,7 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
   @override
   Widget buildView(String playerId) {
     return UiKitView(
-      viewType: playerId,
+      viewType: 'brightcove_videoplayer#$playerId',
     );
   }
 

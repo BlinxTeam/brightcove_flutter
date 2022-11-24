@@ -1,61 +1,100 @@
+import 'package:brightcove_flutter/brightcove_flutter.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:brightcove_ios/brightcove_ios.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    title: 'Flutter Demo',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    home: const MyHomePage(title: 'Flutter Demo Home Page'),
+  ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  //final _brightcoveIosPlugin = BrightcoveIos();
-
+class _MyHomePageState extends State<MyHomePage> {
   @override
-  void initState() {
-    super.initState();
-    initPlatformState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView(
+        children: [
+          PlayerWidget(
+            key: UniqueKey(),
+          ),
+          PlayerWidget(
+            key: UniqueKey(),
+          ),
+        ],
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
+}
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion = null ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+class PlayerWidget extends StatefulWidget {
+  const PlayerWidget({Key? key, this.videoId}) : super(key: key);
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  final String? videoId;
 
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  @override
+  State<PlayerWidget> createState() => _PlayerWidgetState();
+}
+
+class _PlayerWidgetState extends State<PlayerWidget> {
+  late final BrightcoveVideoPlayerController _controller =
+  BrightcoveVideoPlayerController.playVideoById(
+    widget.videoId ?? '6311532572112',
+    options: BrightcoveOptions(
+      account: "6314458267001",
+      policy:
+      "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
+    ),
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+    return SizedBox(
+      height: 250,
+      child: Column(
+        children: [
+          Expanded(
+            child: BrightcoveVideoPlayer(_controller),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                  onPressed: _controller.play,
+                  icon: const Icon(Icons.play_arrow_outlined)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 1,
+                  height: 24,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
+                  onPressed: _controller.pause, icon: const Icon(Icons.pause)),
+            ],
+          )
+        ],
       ),
     );
   }

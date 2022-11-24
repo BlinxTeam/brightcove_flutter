@@ -18,7 +18,7 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
   }
 
     func initialize() {
-        disposeAll()
+       // disposeAll()
     }
     
     private func disposeAll() {
