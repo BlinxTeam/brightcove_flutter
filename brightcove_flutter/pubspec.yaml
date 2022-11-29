@@ -22,12 +22,12 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_android
-      ref: v0.1.2
+      ref: v0.1.3
   brightcove_ios:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_ios
-      ref: v0.1.2
+      ref: v0.1.3
 
 dependency_overrides:
   brightcove_flutter_platform_interface:
