@@ -91,7 +91,9 @@ public class PlayerFactory: NSObject, FlutterPlatformViewFactory {
 public class VideoView: NSObject, FlutterPlatformView {
     
     public func view() -> UIView {
-        return BCOVPUIPlayerView()
+        let view = BCOVPUIPlayerView()
+        view.controlsContainerView.alpha = 0
+        return view
     }
 }
 
@@ -126,7 +128,9 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
         } else {
             self.controller = self.manager.createPlaybackController()
         }
-        return BCOVPUIPlayerView(playbackController: controller)
+        guard var playerView = BCOVPUIPlayerView(playbackController: controller) else { return BCOVPUIPlayerView(playbackController: controller) }
+        playerView.controlsContainerView.alpha = 0
+        return playerView
     }
     
     func play() {
