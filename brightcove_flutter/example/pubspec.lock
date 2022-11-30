@@ -18,11 +18,9 @@ packages:
   brightcove_android:
     dependency: transitive
     description:
-      path: brightcove_android
-      ref: "v0.1.5"
-      resolved-ref: "3a975082bb42f63f98f5e607c63aee9e4a212519"
-      url: "https://github.com/Genieology/brightcove_flutter.git"
-    source: git
+      path: "../../brightcove_android"
+      relative: true
+    source: path
     version: "0.1.0"
   brightcove_flutter:
     dependency: "direct main"
@@ -34,20 +32,16 @@ packages:
   brightcove_flutter_platform_interface:
     dependency: transitive
     description:
-      path: brightcove_flutter_platform_interface
-      ref: HEAD
-      resolved-ref: "3a975082bb42f63f98f5e607c63aee9e4a212519"
-      url: "https://github.com/Genieology/brightcove_flutter.git"
-    source: git
-    version: "0.0.1"
+      path: "../../brightcove_flutter_platform_interface"
+      relative: true
+    source: path
+    version: "0.0.2"
   brightcove_ios:
     dependency: transitive
     description:
-      path: brightcove_ios
-      ref: "v0.1.5"
-      resolved-ref: "3a975082bb42f63f98f5e607c63aee9e4a212519"
-      url: "https://github.com/Genieology/brightcove_flutter.git"
-    source: git
+      path: "../../brightcove_ios"
+      relative: true
+    source: path
     version: "0.1.0"
   characters:
     dependency: transitive

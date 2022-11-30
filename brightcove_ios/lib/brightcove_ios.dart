@@ -81,7 +81,7 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
                 (map['position'] == null ||
                         map['position'] == double.negativeInfinity ||
                         map['position'] == double.infinity)
-                    ? 0
+                    ? (0 as int)
                     : ((map['position'] as double) * 1000).toInt(),
           );
         case 'completed':

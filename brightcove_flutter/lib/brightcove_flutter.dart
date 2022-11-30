@@ -242,7 +242,7 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           print("[listener][position]${event.currentPosition}");
           value = value.copyWith(
               position: Duration(
-            milliseconds: ((event.currentPosition ?? 0)),
+            milliseconds: ((event.currentPosition ?? 0) as int),
           ));
           break;
         case VideoEventType.completed:
