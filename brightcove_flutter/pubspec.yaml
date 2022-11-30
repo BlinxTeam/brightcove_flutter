@@ -23,13 +23,13 @@ dependencies:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_android
-      ref: v0.1.7
+      ref: v0.1.8
   brightcove_ios:
     # path: ../brightcove_ios
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_ios
-      ref: v0.1.7
+      ref: v0.1.8
 
 dependency_overrides:
   brightcove_flutter_platform_interface:
@@ -37,6 +37,7 @@ dependency_overrides:
     git:
       url: https://github.com/Genieology/brightcove_flutter.git
       path: brightcove_flutter_platform_interface
+      ref: v0.1.8
 
 dev_dependencies:
   flutter_test:
