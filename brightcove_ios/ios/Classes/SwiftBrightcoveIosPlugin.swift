@@ -100,6 +100,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
     private var playbackService: BCOVPlaybackService!
     private var currentVideo: BCOVVideo?
     private var isInitted = false
+    private var didComplete = false
 
     lazy private var manager: BCOVPlayerSDKManager = {
          let _manager = BCOVPlayerSDKManager.shared()!
@@ -225,9 +226,13 @@ extension BCovePlayer: BCOVPlaybackControllerDelegate {
         }
         
         self.eventSink?(["event": "playProgress", "position": progress])
+        
+        debugPrint("[swift][\(currentItem.duration.seconds)][\(progress)]")
+        
+        if  (progress.isInfinite && progress > 0 && !didComplete) {// currentItem.duration.seconds == progress && (currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
+            self.didComplete = true
+            self.eventSink?(["event": "completed"])
             
-        if currentItem.duration.seconds == progress && (currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
-            self.eventSink?(["event": "bufferingCompleted"])
         }
     }
 }
