@@ -186,7 +186,7 @@ class BrightcoveVideoPlayerApiSetup {
     if let api = api {
       initializeChannel.setMessageHandler { _, reply in
         api.initialize()
-        reply(nil)
+        reply(wrapResult(nil))
       }
     } else {
       initializeChannel.setMessageHandler(nil)
@@ -208,7 +208,7 @@ class BrightcoveVideoPlayerApiSetup {
         let args = message as! [Any?]
         let msgArg = args[0] as! TextureMessage
         api.dispose(msg: msgArg)
-        reply(nil)
+        reply(wrapResult(nil))
       }
     } else {
       disposeChannel.setMessageHandler(nil)
@@ -241,7 +241,7 @@ class BrightcoveVideoPlayerApiSetup {
         let args = message as! [Any?]
         let msgArg = args[0] as! TextureMessage
         api.play(msg: msgArg)
-        reply(nil)
+        reply(wrapResult(nil))
       }
     } else {
       playChannel.setMessageHandler(nil)
@@ -252,7 +252,7 @@ class BrightcoveVideoPlayerApiSetup {
         let args = message as! [Any?]
         let msgArg = args[0] as! TextureMessage
         api.pause(msg: msgArg)
-        reply(nil)
+        reply(wrapResult(nil))
       }
     } else {
       pauseChannel.setMessageHandler(nil)
@@ -263,7 +263,7 @@ class BrightcoveVideoPlayerApiSetup {
         let args = message as! [Any?]
         let msgArg = args[0] as! PositionMessage
         api.seekTo(msg: msgArg)
-        reply(nil)
+        reply(wrapResult(nil))
       }
     } else {
       seekToChannel.setMessageHandler(nil)

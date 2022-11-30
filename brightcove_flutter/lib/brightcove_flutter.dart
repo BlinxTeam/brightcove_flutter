@@ -238,7 +238,8 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
         case VideoEventType.playProgress:
           value = value.copyWith(
-            position: Duration(milliseconds: event.currentPosition!.toInt()),
+            position: Duration(
+                milliseconds: ((event.currentPosition ?? 0) * 1000).toInt()),
           );
           break;
         case VideoEventType.completed:

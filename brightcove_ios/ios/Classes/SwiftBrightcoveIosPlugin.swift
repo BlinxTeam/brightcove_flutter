@@ -4,7 +4,7 @@ import BrightcovePlayerSDK
 
 public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoPlayerApi {
     
-    var registrar: FlutterPluginRegistrar?;
+    var registrar: FlutterPluginRegistrar?
     private var players: [String:BCovePlayer] = [:]
     
     public init(with registrar: FlutterPluginRegistrar) {
@@ -12,12 +12,12 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
         self.registrar = registrar
     }
     
-  public static func register(with registrar: FlutterPluginRegistrar) {
-      let plugin = SwiftBrightcoveIosPlugin(with: registrar)
-      registrar.addApplicationDelegate(plugin)
-      BrightcoveVideoPlayerApiSetup.setUp(binaryMessenger: registrar.messenger(),
-                                          api: plugin)
-  }
+      public static func register(with registrar: FlutterPluginRegistrar) {
+          let plugin = SwiftBrightcoveIosPlugin(with: registrar)
+          registrar.addApplicationDelegate(plugin)
+          BrightcoveVideoPlayerApiSetup.setUp(binaryMessenger: registrar.messenger(),
+                                              api: plugin)
+      }
 
     func initialize() {
        disposeAll()
@@ -88,28 +88,42 @@ public class PlayerFactory: NSObject, FlutterPlatformViewFactory {
     }
 }
 
-public class VideoView: NSObject, FlutterPlatformView {
-    
-    public func view() -> UIView {
-        let view = BCOVPUIPlayerView()
-        view.controlsContainerView.alpha = 0
-        return view
-    }
-}
-
 public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStreamHandler {
 
     private var eventSink: FlutterEventSink?
     private var controller: BCOVPlaybackController?
+    {
+        didSet {
+            controller?.delegate = self
+        }
+    }
     private var playbackService: BCOVPlaybackService!
+    private var currentVideo: BCOVVideo?
+    private var isInitted = false
 
     lazy private var manager: BCOVPlayerSDKManager = {
          let _manager = BCOVPlayerSDKManager.shared()!
          return _manager
      }()
     
+    lazy private var playerView: UIView = {
+        if let controller = controller {
+            self.controller = controller
+        } else {
+            self.controller = self.manager.createPlaybackController()
+        }
+        guard let playerView = BCOVPUIPlayerView(playbackController: controller) else { return BCOVPUIPlayerView(playbackController: controller) }
+        playerView.controlsContainerView.alpha = 0
+        return playerView
+    }()
+    
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = events
+        // if the video loaded before the onListen is called, then send the initialized event on the stream
+//        if let _ = self.currentVideo, !isInitted {
+//            sendInitializedEvent(duration: 30000)
+//            self.isInitted = true
+//        }
         return nil
     }
     
@@ -123,14 +137,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
     }
     
     public func view() -> UIView {
-        if let controller = controller {
-            self.controller = controller
-        } else {
-            self.controller = self.manager.createPlaybackController()
-        }
-        guard var playerView = BCOVPUIPlayerView(playbackController: controller) else { return BCOVPUIPlayerView(playbackController: controller) }
-        playerView.controlsContainerView.alpha = 0
-        return playerView
+        return self.playerView
     }
     
     func play() {
@@ -179,17 +186,47 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
             self.playbackService.findVideo(withVideoID: message.dataSource, parameters: nil, completion: {
                 (video: BCOVVideo?, jsonResponse: [AnyHashable:Any]?, error: Error?) in
                 if let video = video {
+                    self.currentVideo = video
                     self.controller?.isAutoPlay = true
-                    self.controller!.setVideos([video] as NSFastEnumeration)
-                    self.eventSink?([
-                        "event": "initialized",
-                        "duration": 30
-                    ])
+                    self.controller?.setVideos([video] as NSFastEnumeration)
+//                    if let sink = self.eventSink {
+//                        sink([
+//                            "event": "initialized",
+////                            "videoHeight": video
+//                            "duration": 30
+//                        ])
+//                        self.isInitted = true
+//                    }
                 }
             })
         }
     }
     
-    
-    
+    /// duration in millisecond
+    func sendInitializedEvent(duration: Double) {
+        self.isInitted = true
+        self.eventSink?([
+            "event": "initialized",
+            "videoHeight": 0, // self.playerView.frame.height,
+            "videoWidth": 0, // self.playerView.frame.width,
+            "duration": duration
+        ])
+        
+    }
+}
+
+extension BCovePlayer: BCOVPlaybackControllerDelegate {
+    public func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
+         guard let currentItem = session.player.currentItem else { return }
+        
+        if !isInitted {
+            self.sendInitializedEvent(duration: currentItem.duration.seconds * 1000)
+        }
+        
+        self.eventSink?(["event": "playProgress", "position": progress])
+            
+        if currentItem.duration.seconds == progress {
+            self.eventSink?(["event": "bufferingCompleted"])
+        }
+    }
 }
