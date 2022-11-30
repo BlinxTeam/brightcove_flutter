@@ -228,8 +228,10 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith(isInitialized: true);
 
     void listener(VideoEvent event) {
+      print("[listener]$event");
       switch (event.eventType) {
         case VideoEventType.initialized:
+          print("[listener][initialized][${event.duration?.inSeconds}]");
           value = value.copyWith(
             size: event.size,
             duration: event.duration,
@@ -237,10 +239,11 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           break;
         case VideoEventType.playProgress:
+          print("[listener][position]${event.currentPosition}");
           value = value.copyWith(
-            position: Duration(
-                milliseconds: ((event.currentPosition ?? 0) * 1000).toInt()),
-          );
+              position: Duration(
+            milliseconds: ((event.currentPosition ?? 0)),
+          ));
           break;
         case VideoEventType.completed:
           pause().then((_) => seekTo(value.duration));

@@ -203,15 +203,16 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
     }
     
     /// duration in millisecond
-    func sendInitializedEvent(duration: Double) {
-        self.isInitted = true
-        self.eventSink?([
-            "event": "initialized",
-            "videoHeight": 0, // self.playerView.frame.height,
-            "videoWidth": 0, // self.playerView.frame.width,
-            "duration": duration
-        ])
-        
+    func sendInitializedEvent(duration: Int) {
+        if (!isInitted) {
+            self.isInitted = true
+            self.eventSink?([
+                "event": "initialized",
+                "videoHeight": 0, // self.playerView.frame.height,
+                "videoWidth": 0, // self.playerView.frame.width,
+                "duration": duration
+            ])
+        }
     }
 }
 
@@ -219,13 +220,13 @@ extension BCovePlayer: BCOVPlaybackControllerDelegate {
     public func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
          guard let currentItem = session.player.currentItem else { return }
         
-        if !isInitted {
-            self.sendInitializedEvent(duration: currentItem.duration.seconds * 1000)
+        if !isInitted && (!currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
+            self.sendInitializedEvent(duration: Int(currentItem.duration.seconds * 1000))
         }
         
         self.eventSink?(["event": "playProgress", "position": progress])
             
-        if currentItem.duration.seconds == progress {
+        if currentItem.duration.seconds == progress && (currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
             self.eventSink?(["event": "bufferingCompleted"])
         }
     }

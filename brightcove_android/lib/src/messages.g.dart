@@ -115,8 +115,8 @@ class PlayMessage {
       policy: pigeonMap['policy']! as String,
       dataSource: pigeonMap['dataSource']! as String,
       catalogBaseUrl: pigeonMap['catalogBaseUrl'] as String?,
-      dataSourceType: DataSourceType.values[pigeonMap['dataSourceType']! as int]
-,
+      dataSourceType:
+          DataSourceType.values[pigeonMap['dataSourceType']! as int],
     );
   }
 }
@@ -128,41 +128,37 @@ class _BrightcoveVideoPlayerApiCodec extends StandardMessageCodec {
     if (value is PlayMessage) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is PositionMessage) {
+    } else if (value is PositionMessage) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is TextureMessage) {
+    } else if (value is TextureMessage) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is VolumeMessage) {
+    } else if (value is VolumeMessage) {
       buffer.putUint8(131);
       writeValue(buffer, value.encode());
-    } else 
-{
+    } else {
       super.writeValue(buffer, value);
     }
   }
+
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 128:       
+      case 128:
         return PlayMessage.decode(readValue(buffer)!);
-      
-      case 129:       
+
+      case 129:
         return PositionMessage.decode(readValue(buffer)!);
-      
-      case 130:       
+
+      case 130:
         return TextureMessage.decode(readValue(buffer)!);
-      
-      case 131:       
+
+      case 131:
         return VolumeMessage.decode(readValue(buffer)!);
-      
-      default:      
+
+      default:
         return super.readValueOfType(type, buffer);
-      
     }
   }
 }
@@ -171,7 +167,8 @@ class BrightcoveVideoPlayerApi {
   /// Constructor for [BrightcoveVideoPlayerApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  BrightcoveVideoPlayerApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+  BrightcoveVideoPlayerApi({BinaryMessenger? binaryMessenger})
+      : _binaryMessenger = binaryMessenger;
 
   final BinaryMessenger? _binaryMessenger;
 
@@ -179,7 +176,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> initialize() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.initialize', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.initialize', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -188,7 +186,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -201,7 +200,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<TextureMessage> create(PlayMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.create', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.create', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -210,7 +210,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -228,7 +229,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> dispose(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.dispose', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.dispose', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -237,7 +239,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -250,7 +253,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> setVolume(VolumeMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.setVolume', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.setVolume', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -259,7 +263,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -272,7 +277,9 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> enterPictureInPictureMode(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.enterPictureInPictureMode', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.enterPictureInPictureMode',
+        codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -281,7 +288,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -294,7 +302,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> play(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.play', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.play', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -303,7 +312,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -316,7 +326,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> pause(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.pause', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.pause', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -325,7 +336,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -338,7 +350,8 @@ class BrightcoveVideoPlayerApi {
 
   Future<void> seekTo(PositionMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.seekTo', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BrightcoveVideoPlayerApi.seekTo', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -347,7 +360,8 @@ class BrightcoveVideoPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,

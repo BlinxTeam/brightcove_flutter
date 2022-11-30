@@ -51,7 +51,7 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
         case 'initialized':
           return VideoEvent(
             eventType: VideoEventType.initialized,
-            duration: Duration(milliseconds: (map['duration'] as double).round()),
+            duration: Duration(milliseconds: map['duration'] as int),
             size: Size(
               (map['videoWidth'] as int).toDouble(),
               (map['videoHeight'] as int).toDouble(),
@@ -65,7 +65,7 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
-            currentPosition: map['position'] as double,
+            currentPosition: map['position'] as int,
           );
         case 'completed':
           return VideoEvent(eventType: VideoEventType.completed);

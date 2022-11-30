@@ -53,10 +53,17 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
         case 'bufferingCompleted':
           return VideoEvent(eventType: VideoEventType.bufferingEnd);
         case 'initialized':
+          // Duration duration = Duration(milliseconds: 0);
+          // if (map['duration'] is double) {
+          //   duration =
+          //       Duration(milliseconds: (map['duration'] as double).round());
+          // } else if (map['duration' is Duration]) {
+          //   duration = map['duration'] as Duration;
+          // }
           return VideoEvent(
             eventType: VideoEventType.initialized,
-            duration:
-                Duration(milliseconds: (map['duration'] as double).round()),
+            duration: // map['duration'] as Duration,
+                Duration(milliseconds: (map['duration'] as int? ?? 0)),
             size: Size(
               (map['videoWidth'] as int?)?.toDouble() ?? 0,
               (map['videoHeight'] as int?)?.toDouble() ?? 0,
@@ -70,10 +77,12 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
-            currentPosition: (map['position'] == double.negativeInfinity ||
-                    map['position'] == double.infinity)
-                ? 0
-                : map['position'],
+            currentPosition: //map['position'] ??
+                (map['position'] == null ||
+                        map['position'] == double.negativeInfinity ||
+                        map['position'] == double.infinity)
+                    ? 0
+                    : ((map['position'] as double) * 1000).toInt(),
           );
         case 'completed':
           return VideoEvent(eventType: VideoEventType.completed);
