@@ -51,7 +51,7 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
         case 'initialized':
           return VideoEvent(
             eventType: VideoEventType.initialized,
-            duration: Duration(milliseconds: map['duration'] as int),
+            duration: Duration(milliseconds: (map['duration'] as double).round()),
             size: Size(
               (map['videoWidth'] as int).toDouble(),
               (map['videoHeight'] as int).toDouble(),
