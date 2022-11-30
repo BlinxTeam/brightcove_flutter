@@ -65,7 +65,7 @@ class BrightcoveAndroidPlatform extends BrightcoveFlutterPlatform {
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
-            currentPosition: map['position'] as int,
+            currentPosition: map['position'] as double,
           );
         case 'completed':
           return VideoEvent(eventType: VideoEventType.completed);

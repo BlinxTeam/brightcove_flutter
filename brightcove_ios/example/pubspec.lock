@@ -32,11 +32,9 @@ packages:
   brightcove_flutter_platform_interface:
     dependency: transitive
     description:
-      path: brightcove_flutter_platform_interface
-      ref: HEAD
-      resolved-ref: "40d81ea2e05201e75614c3dfd60485e86165c10b"
-      url: "https://github.com/Genieology/brightcove_flutter.git"
-    source: git
+      path: "../../brightcove_flutter_platform_interface"
+      relative: true
+    source: path
     version: "0.0.1"
   brightcove_ios:
     dependency: "direct main"
@@ -66,13 +64,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-  crypto:
-    dependency: transitive
-    description:
-      name: crypto
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -92,15 +83,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bcov:
-    dependency: transitive
-    description:
-      path: "PlayerUI/Flutter/flutter_bcov"
-      ref: HEAD
-      resolved-ref: "676d27b6054574cd2b4e338ba5c5798b133089ca"
-      url: "https://github.com/BrightcoveOS/ios-player-samples.git"
-    source: git
-    version: "0.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -113,13 +95,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  get_it:
-    dependency: transitive
-    description:
-      name: get_it
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.2.0"
   lints:
     dependency: transitive
     description:
@@ -148,13 +123,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -169,13 +137,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -195,20 +156,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
-  stacked:
-    dependency: transitive
-    description:
-      name: stacked
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.15+1"
-  stacked_core:
-    dependency: transitive
-    description:
-      name: stacked_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.4"
   stream_channel:
     dependency: transitive
     description:
@@ -237,20 +184,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12"
-  typed_data:
-    dependency: transitive
-    description:
-      name: typed_data
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.1"
-  universal_io:
-    dependency: transitive
-    description:
-      name: universal_io
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.4"
   vector_math:
     dependency: transitive
     description:

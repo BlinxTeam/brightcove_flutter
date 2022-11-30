@@ -55,10 +55,11 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
         case 'initialized':
           return VideoEvent(
             eventType: VideoEventType.initialized,
-            duration: Duration(milliseconds: map['duration'] as int),
+            duration:
+                Duration(milliseconds: (map['duration'] as double).round()),
             size: Size(
-              (map['videoWidth'] as int).toDouble(),
-              (map['videoHeight'] as int).toDouble(),
+              (map['videoWidth'] as int?)?.toDouble() ?? 0,
+              (map['videoHeight'] as int?)?.toDouble() ?? 0,
             ),
           );
         case 'captionsAvailable':
@@ -69,7 +70,10 @@ class BrightcoveIosPlatform extends BrightcoveFlutterPlatform {
         case 'playProgress':
           return VideoEvent(
             eventType: VideoEventType.playProgress,
-            currentPosition: map['position'] as int,
+            currentPosition: (map['position'] == double.negativeInfinity ||
+                    map['position'] == double.infinity)
+                ? 0
+                : map['position'],
           );
         case 'completed':
           return VideoEvent(eventType: VideoEventType.completed);

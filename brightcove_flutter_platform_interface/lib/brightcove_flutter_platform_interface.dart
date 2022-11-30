@@ -215,7 +215,7 @@ class VideoEvent {
   /// The current playback position (in time).
   ///
   /// Only used if [eventType] is [VideoEventType.playProgress].
-  final int? currentPosition;
+  final double? currentPosition;
 
   /// Size of the video.
   ///
