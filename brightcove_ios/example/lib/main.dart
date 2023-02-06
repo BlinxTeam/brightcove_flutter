@@ -21,22 +21,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<String> videoIds = [
+    "6319279522112",
+    "6319279516112",
+    "6319279914112",
+    "6319278662112",
+    "6319276558112",
+    "6319276839112",
+    "6319270488112",
+    "6318889251112",
+    "6318558067112",
+    "6318516169112"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: [
-          PlayerWidget(
-            key: UniqueKey(),
-          ),
-          PlayerWidget(
-            key: UniqueKey(),
-          ),
-        ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: videoIds.length,
+          itemBuilder: (context, index) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: PlayerWidget(key: UniqueKey(), videoId: videoIds[index]),
+            );
+          },
+        ),
+      ),
+
+      // ListView.builder(
+      //   itemCount: videoIds.length,
+      //   itemBuilder: (context, index) {
+      //     return PlayerWidget(key: UniqueKey(), videoId: videoIds[index]);
+      //   },
+      // ),
     );
   }
 }
@@ -51,15 +75,20 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  late final BrightcoveVideoPlayerController _controller =
-  BrightcoveVideoPlayerController.playVideoById(
-    widget.videoId ?? '6311532572112',
-    options: BrightcoveOptions(
-      account: "6314458267001",
-      policy:
-      "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
-    ),
-  );
+  late final BrightcoveVideoPlayerController _controller;
+
+  @override
+  initState() {
+    super.initState();
+    _controller = BrightcoveVideoPlayerController.playVideoById(
+      widget.videoId ?? '6311532572112',
+      options: BrightcoveOptions(
+        account: "6314458267001",
+        policy:
+            "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
+      ),
+    );
+  }
 
   @override
   void dispose() {

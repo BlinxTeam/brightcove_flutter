@@ -12,12 +12,12 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
         self.registrar = registrar
     }
     
-      public static func register(with registrar: FlutterPluginRegistrar) {
+    public static func register(with registrar: FlutterPluginRegistrar) {
           let plugin = SwiftBrightcoveIosPlugin(with: registrar)
           registrar.addApplicationDelegate(plugin)
           BrightcoveVideoPlayerApiSetup.setUp(binaryMessenger: registrar.messenger(),
                                               api: plugin)
-      }
+    }
 
     func initialize() {
        disposeAll()
@@ -171,6 +171,20 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
         } else {
             self.controller = self.manager.createPlaybackController()
         }
+
+        // Optimize buffering by keeping them at low values
+        // so the multiple players don't use up too much memory
+        // https://github.com/brightcove/brightcove-player-sdk-ios#BufferOptimization
+        if var options = self.controller?.options {
+            options[kBCOVBufferOptimizerMethodKey] = NSNumber(value: BCOVBufferOptimizerMethod.default.rawValue)
+            options[kBCOVBufferOptimizerMinimumDurationKey] = 1
+            options[kBCOVBufferOptimizerMaximumDurationKey] = 5
+            self.controller?.options = options
+        }
+
+        // Caching the thumbnail images for multiple videos
+        // will use up a lot of memory so we'll disable this feature
+        self.controller?.thumbnailSeekingEnabled = false
         
         self.playbackService = BCOVPlaybackService(accountId: message.account, policyKey: message.policy)
       
@@ -188,7 +202,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
                 (video: BCOVVideo?, jsonResponse: [AnyHashable:Any]?, error: Error?) in
                 if let video = video {
                     self.currentVideo = video
-                    self.controller?.isAutoPlay = true
+                    self.controller?.isAutoPlay = false
                     self.controller?.setVideos([video] as NSFastEnumeration)
 //                    if let sink = self.eventSink {
 //                        sink([
