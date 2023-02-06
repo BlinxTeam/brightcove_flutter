@@ -1,5 +1,6 @@
 import 'package:brightcove_flutter/brightcove_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -21,45 +22,78 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<String> videoIds = [
+    "6319279522112",
+    "6319279516112",
+    "6319279914112",
+    "6319278662112",
+    "6319276558112",
+    "6319276839112",
+    "6319270488112",
+    "6318889251112",
+    "6318558067112",
+    "6318516169112"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: [
-          PlayerWidget(
-            key: UniqueKey(),
-          ),
-          PlayerWidget(
-            key: UniqueKey(),
-          ),
-        ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: PageScrollPhysics(),
+            cacheExtent: 6,
+            itemCount: videoIds.length,
+            itemBuilder: (context, index) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: PlayerWidget(
+                    key: UniqueKey(), index: index, videoId: videoIds[index]),
+              );
+            }),
+      ),
+
+      // ListView.builder(
+      //   itemCount: videoIds.length,
+      //   itemBuilder: (context, index) {
+      //     return PlayerWidget(key: UniqueKey(), videoId: videoIds[index]);
+      //   },
+      // ),
     );
   }
 }
 
 class PlayerWidget extends StatefulWidget {
-  const PlayerWidget({Key? key, this.videoId}) : super(key: key);
+  const PlayerWidget({Key? key, required this.index, this.videoId})
+      : super(key: key);
 
   final String? videoId;
+  final int index;
 
   @override
   State<PlayerWidget> createState() => _PlayerWidgetState();
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  late final BrightcoveVideoPlayerController _controller =
-  BrightcoveVideoPlayerController.playVideoById(
-    widget.videoId ?? '6311532572112',
-    options: BrightcoveOptions(
-      account: "6314458267001",
-      policy:
-      "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
-    ),
-  );
+  late final BrightcoveVideoPlayerController _controller;
+
+  @override
+  initState() {
+    super.initState();
+    _controller = BrightcoveVideoPlayerController.playVideoById(
+      widget.videoId ?? '6311532572112',
+      options: BrightcoveOptions(
+        account: "6314458267001",
+        policy:
+            "BCpkADawqM3B3oh6cCokobfYe88EwiIADRJ0_8IuKI4GbwP4LN-MzKbgX40HDjJvBEon1ZRmX6krlKOjum8CfTjHuYMUebWTcPKlAZgxlp8H7JJJRNaqGJ9SAy-tTpV_qXAKrYHONp8PQ0m5",
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -67,35 +101,55 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     super.dispose();
   }
 
+  void play() {
+    _controller.play();
+  }
+
+  void pause() {
+    _controller.pause();
+  }
+
+  void _handleVisibilityChanged(VisibilityInfo info) {
+    if (info.visibleFraction == 1.0) {
+      _controller.play();
+    } else {
+      _controller.pause();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: Column(
-        children: [
-          Expanded(
-            child: BrightcoveVideoPlayer(_controller),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return VisibilityDetector(
+        key: Key("video_$widget.index"),
+        onVisibilityChanged: _handleVisibilityChanged,
+        child: SizedBox(
+          height: 250,
+          child: Column(
             children: [
-              IconButton(
-                  onPressed: _controller.play,
-                  icon: const Icon(Icons.play_arrow_outlined)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 1,
-                  height: 24,
-                  color: Colors.black,
-                ),
+              Expanded(
+                child: BrightcoveVideoPlayer(_controller),
               ),
-              IconButton(
-                  onPressed: _controller.pause, icon: const Icon(Icons.pause)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                      onPressed: _controller.play,
+                      icon: const Icon(Icons.play_arrow_outlined)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 1,
+                      height: 24,
+                      color: Colors.black,
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: _controller.pause,
+                      icon: const Icon(Icons.pause)),
+                ],
+              )
             ],
-          )
-        ],
-      ),
-    );
+          ),
+        ));
   }
 }
