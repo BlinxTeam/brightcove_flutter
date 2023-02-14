@@ -47,7 +47,7 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
     }
     
     func setVolume(msg: VolumeMessage) {
-        
+        players[msg.playerId]?.setVolume(level: msg.volume)
     }
     
     func enterPictureInPictureMode(msg: TextureMessage) {
@@ -99,6 +99,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
     }
     private var playbackService: BCOVPlaybackService!
     private var currentVideo: BCOVVideo?
+    private var currentPlayer: AVPlayer?
     private var isInitted = false
     private var didComplete = false
 
@@ -107,7 +108,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
          return _manager
      }()
     
-    lazy private var playerView: UIView = {
+    lazy private var playerView: BCOVPUIPlayerView = {
         if let controller = controller {
             self.controller = controller
         } else {
@@ -115,6 +116,7 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
         }
         guard let playerView = BCOVPUIPlayerView(playbackController: controller) else { return BCOVPUIPlayerView(playbackController: controller) }
         playerView.controlsContainerView.alpha = 0
+        
         return playerView
     }()
     
@@ -153,6 +155,41 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
         controller?.pause()
         playbackService = nil
         controller = nil
+    }
+    
+    func setVolume(level: Double) {
+        currentPlayer?.volume = Float(level)
+        setUpAudioSession()
+    }
+    
+    func setUpAudioSession() {
+        var categoryError :NSError?
+        var success: Bool
+        do {
+            // see https://developer.apple.com/documentation/avfoundation/avaudiosessioncategoryplayback
+            if let currentPlayer = currentPlayer {
+                
+                // If the player is muted, then allow mixing.
+                // Ensure other apps can have their background audio
+                // active when this app is in foreground
+                if currentPlayer.isMuted {
+                    try AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
+                } else {
+                    try AVAudioSession.sharedInstance().setCategory(.playback, options: AVAudioSession.CategoryOptions(rawValue: 0))
+                }
+            } else {
+                try AVAudioSession.sharedInstance().setCategory(.playback, options: AVAudioSession.CategoryOptions(rawValue: 0))
+            }
+            
+            success = true
+        } catch let error as NSError {
+            categoryError = error
+            success = false
+        }
+
+        if !success {
+            print("AppDelegate Debug - Error setting AVAudioSession category.  Because of this, there may be no sound. \(categoryError!)")
+        }
     }
     
     func seekTo(position: CMTime) {
@@ -225,7 +262,8 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
 
 extension BCovePlayer: BCOVPlaybackControllerDelegate {
     public func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
-         guard let currentItem = session.player.currentItem else { return }
+        currentPlayer = session.player
+        guard let currentItem = session.player.currentItem else { return }
         
         if !isInitted && (!currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
             self.sendInitializedEvent(duration: Int(currentItem.duration.seconds * 1000))
