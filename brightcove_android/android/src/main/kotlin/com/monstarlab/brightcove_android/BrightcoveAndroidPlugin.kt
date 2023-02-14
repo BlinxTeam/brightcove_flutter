@@ -68,7 +68,10 @@ class BrightcoveAndroidPlugin : FlutterPlugin, ActivityAware, Messages.Brightcov
         val id = Calendar.getInstance().timeInMillis.toString()
         val videoPlayer = BrightcoveVideoPlayerFlutter()
         val instanceChannel = EventChannel(pluginState!!.binaryMessenger,"brightcove_videoplayer/videoEvents$id")
+
         instanceChannel.setStreamHandler(videoPlayer)
+
+        println("\"[kotlinPlugin]\" brightcove_videoplayer/videoEvents$id")
 
         pluginState!!.platformViewRegistry.registerViewFactory(
             "$VIEW_TYPE#$id",

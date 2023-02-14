@@ -29,10 +29,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
   flutter:
     sdk: flutter
   brightcove_flutter:
     path: ../
+  visibility_detector: ^0.3.3
 
 
   # The following adds the Cupertino Icons font to your application.

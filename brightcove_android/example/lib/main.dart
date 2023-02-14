@@ -38,32 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            physics: PageScrollPhysics(),
+            // physics: PageScrollPhysics(),
             cacheExtent: 6,
             itemCount: videoIds.length,
             itemBuilder: (context, index) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: PlayerWidget(
-                    key: UniqueKey(), index: index, videoId: videoIds[index]),
+              return Container(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: PlayerWidget(
+                      key: UniqueKey(), index: index, videoId: videoIds[index]),
+                ),
               );
             }),
       ),
-
-      // ListView.builder(
-      //   itemCount: videoIds.length,
-      //   itemBuilder: (context, index) {
-      //     return PlayerWidget(key: UniqueKey(), videoId: videoIds[index]);
-      //   },
-      // ),
     );
   }
 }
@@ -146,6 +141,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                   IconButton(
                       onPressed: _controller.pause,
                       icon: const Icon(Icons.pause)),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+                    ),
+                    onPressed: () {},
+                    child: Text('TextButton'),
+                  ),
                 ],
               )
             ],

@@ -35,7 +35,7 @@ public class SwiftBrightcoveIosPlugin: NSObject, FlutterPlugin, BrightcoveVideoP
         let player = BCovePlayer()
         let channel = FlutterEventChannel(name: "brightcove_videoplayer/videoEvents\(id)", binaryMessenger: registrar!.messenger())
         channel.setStreamHandler(player)
-        
+        debugPrint("[swiftPlugin] playerView id \(id)")
         let factory = PlayerFactory(player: player, msg: msg)
         registrar?.register(factory, withId: "brightcove_videoplayer#\(id)")
         players[id] = player
@@ -187,31 +187,23 @@ public class BCovePlayer: FlutterEventChannel, FlutterPlatformView, FlutterStrea
         self.controller?.thumbnailSeekingEnabled = false
         
         self.playbackService = BCOVPlaybackService(accountId: message.account, policyKey: message.policy)
-      
+        let queryParams = [ "rendition": "video2000" ]
         switch message.dataSourceType {
             case .playlistById:
-            self.playbackService.findPlaylist(withPlaylistID: message.dataSource, parameters: nil, completion: {
+            self.playbackService.findPlaylist(withPlaylistID: message.dataSource, parameters: queryParams, completion: {
                 (list: BCOVPlaylist?, jsonResponse: [AnyHashable:Any]?, error: Error?) in
                 if let list = list {
-                    self.controller?.isAutoPlay = true
+                    self.controller?.isAutoPlay = false
                     self.controller?.setVideos([list.allPlayableVideos.first] as NSFastEnumeration)
                 }
             })
             case .videoById:
-            self.playbackService.findVideo(withVideoID: message.dataSource, parameters: nil, completion: {
+            self.playbackService.findVideo(withVideoID: message.dataSource, parameters: queryParams, completion: {
                 (video: BCOVVideo?, jsonResponse: [AnyHashable:Any]?, error: Error?) in
                 if let video = video {
                     self.currentVideo = video
                     self.controller?.isAutoPlay = false
                     self.controller?.setVideos([video] as NSFastEnumeration)
-//                    if let sink = self.eventSink {
-//                        sink([
-//                            "event": "initialized",
-////                            "videoHeight": video
-//                            "duration": 30
-//                        ])
-//                        self.isInitted = true
-//                    }
                 }
             })
         }
@@ -243,7 +235,7 @@ extension BCovePlayer: BCOVPlaybackControllerDelegate {
         
         debugPrint("[swift][\(currentItem.duration.seconds)][\(progress)]")
         
-        if  (progress.isInfinite && progress > 0 && !didComplete) {// currentItem.duration.seconds == progress && (currentItem.duration.seconds.isZero && !currentItem.duration.seconds.isNaN) {
+        if  (progress.isInfinite && progress > 0 && !didComplete) {
             self.didComplete = true
             self.eventSink?(["event": "completed"])
             

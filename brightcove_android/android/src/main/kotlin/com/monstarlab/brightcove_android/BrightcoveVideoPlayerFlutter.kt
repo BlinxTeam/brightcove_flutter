@@ -36,12 +36,13 @@ class BrightcoveVideoPlayerFlutter : PlatformView, EventChannel.StreamHandler {
         mediaController.isShowControllerEnable = false // hide default controller actions
         videoView.setMediaController(mediaController)
         videoView.analytics.account = msg.account
-
+        val options = mapOf("rendition" to "video2000")
         val baseUrl =
             if (msg.catalogBaseUrl == null) Catalog.DEFAULT_EDGE_BASE_URL else msg.catalogBaseUrl
         videoViewCatalog = Catalog.Builder(this.videoView.eventEmitter, msg.account)
             .setPolicy(msg.policy)
             .setBaseURL(baseUrl!!)
+            .setProperties(options)
             .build()
 
         subscribeToEvents()
