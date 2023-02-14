@@ -1,8 +1,8 @@
 name: brightcove_flutter_platform_interface
 description: Interface implementation for the Brightcove plugin
 version: 0.0.2
-repository: https://github.com/Genieology/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
-homepage: https://github.com/Genieology/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
+repository: https://github.com/BlinxTeam/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
+homepage: https://github.com/BlinxTeam/brightcove_flutter/tree/main/brightcove_flutter_platform_interface
 publish_to: none
 
 environment:
