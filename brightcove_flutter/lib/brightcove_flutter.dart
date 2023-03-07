@@ -304,13 +304,13 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future play() async {
-    if (value.isPlaying) return;
+    // if (value.isPlaying) return;
     value = value.copyWith(isPlaying: true);
     await _videoPlayerPlatform.play(_playerId);
   }
 
   Future pause() async {
-    if (!value.isPlaying) return;
+    // if (!value.isPlaying) return;
     value = value.copyWith(isPlaying: false);
     await _videoPlayerPlatform.pause(_playerId);
   }
