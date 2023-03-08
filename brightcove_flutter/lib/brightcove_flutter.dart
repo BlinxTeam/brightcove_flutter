@@ -36,6 +36,7 @@ class VideoPlayerValue {
     this.size = Size.zero,
     this.position = Duration.zero,
     this.isInitialized = false,
+    this.isCompleted = false,
     this.isPlaying = false,
     this.isLooping = false,
     this.isBuffering = false,
@@ -94,6 +95,9 @@ class VideoPlayerValue {
   /// Indicates whether or not the video has been loaded and is ready to play.
   final bool isInitialized;
 
+  /// True if video has completed playing
+  final bool isCompleted;
+
   /// Indicates if the player auto-plays
   // final bool isAutoPlay;
 
@@ -128,6 +132,7 @@ class VideoPlayerValue {
     Duration? position,
     Duration? captionOffset,
     bool? isInitialized,
+    bool? isCompleted,
     bool? isPlaying,
     bool? isLooping,
     bool? isBuffering,
@@ -142,6 +147,7 @@ class VideoPlayerValue {
       size: size ?? this.size,
       position: position ?? this.position,
       isInitialized: isInitialized ?? this.isInitialized,
+      isCompleted: isCompleted ?? this.isCompleted,
       isPlaying: isPlaying ?? this.isPlaying,
       isLooping: isLooping ?? this.isLooping,
       isBuffering: isBuffering ?? this.isBuffering,
@@ -160,6 +166,7 @@ class VideoPlayerValue {
         'size: $size, '
         'position: $position, '
         'isInitialized: $isInitialized, '
+        'isCompleted: $isCompleted, '
         'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '
@@ -171,6 +178,7 @@ class VideoPlayerValue {
   bool operator ==(other) {
     return (other is VideoPlayerValue &&
         other.isInitialized == isInitialized &&
+        other.isCompleted == isCompleted &&
         other.isLooping == isLooping &&
         other.isBuffering == isBuffering &&
         other.volume == volume &&
@@ -184,6 +192,7 @@ class VideoPlayerValue {
   @override
   int get hashCode => Object.hash(
         isInitialized,
+        isCompleted,
         isPlaying,
         isLooping,
         volume,
@@ -245,11 +254,12 @@ class BrightcoveVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           print("[listener][position]${event.currentPosition}");
           value = value.copyWith(
               position: Duration(
-            milliseconds: ((event.currentPosition ?? 0) as int),
+            milliseconds: (event.currentPosition ?? 0),
           ));
           break;
         case VideoEventType.completed:
           pause().then((_) => seekTo(value.duration));
+          value = value.copyWith(isCompleted: true);
           break;
         case VideoEventType.bufferingStart:
           value = value.copyWith(isBuffering: true);
